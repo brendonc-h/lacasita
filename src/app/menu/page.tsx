@@ -1,6 +1,8 @@
 import { categories, menuItems } from '@/data/menu';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FireIcon } from '@heroicons/react/24/solid';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 
 export default function MenuPage() {
   return (
@@ -11,6 +13,13 @@ export default function MenuPage() {
           <p className="mt-4 text-lg text-gray-500">
             Discover our authentic Mexican dishes made with fresh ingredients and traditional recipes
           </p>
+          <Link
+            href="/order"
+            className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          >
+            <ShoppingCartIcon className="h-5 w-5" />
+            Order Online
+          </Link>
         </div>
 
         <div className="mt-16">
@@ -20,14 +29,17 @@ export default function MenuPage() {
 
             return (
               <div key={category.id} className="mb-16">
-                <h2 className="text-2xl font-bold text-gray-900 mb-8">{category.name}</h2>
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900">{category.name}</h2>
+                  <p className="mt-2 text-lg text-gray-600">{category.description}</p>
+                </div>
+                <div className="space-y-8">
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="group relative bg-white rounded-lg shadow-lg overflow-hidden"
+                      className="flex flex-col md:flex-row gap-8 bg-white rounded-lg shadow-lg overflow-hidden"
                     >
-                      <div className="aspect-h-3 aspect-w-4 bg-gray-200">
+                      <div className="w-full md:w-1/3 h-64 md:h-auto relative">
                         <Image
                           src={item.image}
                           alt={item.name}
@@ -35,31 +47,35 @@ export default function MenuPage() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="p-6">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
-                          <p className="text-lg font-medium text-primary-600">
+                      <div className="flex-1 p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <h3 className="text-2xl font-bold text-gray-900">{item.name}</h3>
+                            {item.popular && (
+                              <span className="mt-1 inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-sm font-medium text-yellow-800">
+                                Popular Choice
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-2xl font-bold text-primary-600">
                             ${item.price.toFixed(2)}
                           </p>
                         </div>
-                        <p className="mt-2 text-sm text-gray-500">{item.description}</p>
+                        <p className="text-lg text-gray-600 mb-4">{item.description}</p>
                         {item.spicyLevel && (
-                          <div className="mt-2 flex items-center gap-1">
-                            {[...Array(item.spicyLevel)].map((_, i) => (
-                              <FireIcon
-                                key={i}
-                                className="h-5 w-5 text-red-500"
-                                aria-hidden="true"
-                              />
-                            ))}
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-700">Spice Level:</span>
+                            <div className="flex items-center gap-1">
+                              {[...Array(item.spicyLevel)].map((_, i) => (
+                                <FireIcon
+                                  key={i}
+                                  className="h-5 w-5 text-red-500"
+                                  aria-hidden="true"
+                                />
+                              ))}
+                            </div>
                           </div>
                         )}
-                        <button
-                          type="button"
-                          className="mt-4 w-full rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
-                        >
-                          Add to Cart
-                        </button>
                       </div>
                     </div>
                   ))}

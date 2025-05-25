@@ -2,7 +2,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { Dialog } from '@headlessui/react';
+import { useCart } from '@/lib/cart-context';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -13,6 +15,9 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { state } = useCart();
+
+  const cartItemCount = state.items.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <header className="bg-white shadow-sm">
@@ -33,6 +38,17 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            <Link
+              href="/checkout"
+              className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-primary-600"
+            >
+              <ShoppingCartIcon className="h-5 w-5" />
+              {cartItemCount > 0 && (
+                <span className="rounded-full bg-primary-600 px-2 py-1 text-xs text-white">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
           </div>
           <div className="flex md:hidden">
             <button

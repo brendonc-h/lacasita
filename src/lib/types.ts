@@ -3,6 +3,7 @@ export type CartItem = {
   name: string;
   price: number;
   quantity: number;
+  image: string;
 };
 
 export type OrderDetails = {
@@ -17,7 +18,7 @@ export type CustomerInfo = {
   name: string;
   email: string;
   phone: string;
-  address?: string;
   orderType: 'pickup' | 'delivery';
+  address?: string;
   specialInstructions?: string;
 };
